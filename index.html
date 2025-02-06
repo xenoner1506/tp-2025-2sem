@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>Технологии программирования</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href=".//dist/reset.css">
+  <link rel="stylesheet" href=".//dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap; background-color: red;}
+    td{font-size: 24px; }
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href=".//dist/theme/black.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Технологии программирования</h1>
+</section>
+
+<section>
+<section id="семинар-20250206" class="title-slide slide level1">
+<h1>Семинар 2025/02/06</h1>
+
+</section>
+<section id="о-чем-предмет" class="slide level2">
+<h2>О чем предмет</h2>
+<p>В течение года мы будем учиться:</p>
+<ul>
+<li>Использовать Unix-подобные системы</li>
+<li>Пользоваться общими инструментами разработки <!-- - Скрипты bash -->
+<!-- - cmake --> <!-- - docker --> <!-- - CI/CD --></li>
+<li>Писать промышленный код</li>
+</ul>
+</section>
+<section id="оценка" class="slide level2">
+<h2>Оценка</h2>
+<p>Формируется из трех основных пунктов:</p>
+<ul>
+<li>70% - задания</li>
+<li>15% - активность на семинарах</li>
+<li>15% - контрольная</li>
+<li>10% - активность на лекциях</li>
+</ul>
+</section>
+<section id="краеугольный-камень" class="slide level2">
+<h2>Краеугольный камень</h2>
+<p>Нужно установить Unix-подобную систему</p>
+<p>Один из дистрибутивов Linux или же MacOS</p>
+<p>Можно работать и с использованием VirtualBox или WSL</p>
+</section>
+<section id="терминал" class="slide level2">
+<h2>Терминал</h2>
+<p>Основной и самый общий инструмент разработчика</p>
+<p>Стоит выделять оболочку: sh, bash, zsh, fish</p>
+<p>Эмулятор терминала: xterm, GNOME Terminal, Kosole, PuTTY</p>
+</section>
+<section id="основные-команды" class="slide level2">
+<h2>Основные команды</h2>
+<table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cd ~/Desktop</code></td>
+<td>Переместиться в директорию по пути <code>~/Desktop</code></td>
+</tr>
+<tr>
+<td><code>ls ~/Desktop</code></td>
+<td>Показать содержимое директории <code>~/Desktop</code></td>
+</tr>
+<tr>
+<td><code>touch file</code></td>
+<td>“Потрогать” или создать файл с именем <code>file</code></td>
+</tr>
+<tr>
+<td><code>mkdir tmp</code></td>
+<td>Создать директорию <code>tmp</code></td>
+</tr>
+<tr>
+<td><code>rm file</code></td>
+<td>Удалить файл <code>file</code></td>
+</tr>
+<tr>
+<td><code>rmdir tmp</code></td>
+<td>“Безопасное” удаление директории <code>tmp</code></td>
+</tr>
+<tr>
+<td><code>rm -r tmp</code></td>
+<td>Рекурсивное удаление директории <code>tmp</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="все-есть-файл-или-директория" class="slide level2">
+<h2>Все есть файл или директория</h2>
+<p>Узнать подробную информацию: <code>ls -l ./</code></p>
+<pre><code>тип и права  коло-во  владелец   группа  размер  время последней  имя
+              ссылок                                 модификации
+drwxr-xr-x         2   zavadvs  zavadvs    4096     Feb  4 12:31  Desktop/
+drwxr-xr-x         5   zavadvs  zavadvs    4096     Feb  5 18:19  Documents/
+drwxr-xr-x         6   zavadvs  zavadvs    4096     Feb  5 18:42  Downloads/
+-rw-rw-r--         1   zavadvs  zavadvs       0     Feb  5 22:50  filename</code></pre>
+</section>
+<section id="задание-1" class="slide level2">
+<h2>Задание 1</h2>
+<ul>
+<li>Создайте директорию <code>lesson01</code></li>
+<li>Перейдите в директорию <code>lesson01</code></li>
+<li>Создайте директорию <code>sublesson/01</code> одной командой</li>
+<li>Создайте файл <code>empty.txt</code></li>
+<li>Проверьте работу <code>ls -laF ./</code></li>
+</ul>
+</section>
+<section id="тип-и-права" class="slide level2">
+<h2>Тип и права</h2>
+<ul>
+<li>Бывают следующие типы: -, d, l, b, c, p, s</li>
+<li>Права: пользователь, группа, все остальные</li>
+<li>Альтернативный вид прав: 4 (r), 2 (w), 1 (x)</li>
+<li>Изменить права можно <code>chmod</code>’ом
+<ul>
+<li><code>chmod g-w filename</code></li>
+<li><code>chmod 732 filename</code></li>
+</ul></li>
+<li>Изменить владельца/группу <code>chown</code>’ом
+<ul>
+<li><code>chown usr:grp filename</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="откуда-мне-про-это-знать" class="slide level2">
+<h2>Откуда мне про это знать</h2>
+<p>Документацию можно посмотреть с помощью утилиты <code>man</code></p>
+<p>Альтернативный вариант: <code>tldr</code></p>
+</section>
+<section id="установка-дополнительных-утилитпакетов"
+class="slide level2">
+<h2>Установка дополнительных утилит/пакетов</h2>
+<p>Разные дистрибутивы предоставляют разные пакетные менеджеры:</p>
+<ul>
+<li><p style="font-size: 32px; ">
+Ubuntu/Debian: <code>sudo apt install &lt;package&gt;</code>
+</p></li>
+<li><p style="font-size: 32px; ">
+Fedora/AlmaLinux: <code>sudo dnf install &lt;package&gt;</code>
+</p></li>
+<li><p style="font-size: 32px; ">
+Arch Linux: <code>sudo pacman -S &lt;package&gt;</code>
+</p></li>
+<li><p style="font-size: 32px; ">
+macOS: <code>brew install &lt;package&gt;</code>
+</p></li>
+</ul>
+</section>
+<section id="перенаправление" class="slide level2">
+<h2>Перенаправление</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ls . &gt; filename.log</code></td>
+<td>Направить стандартный вывод в файл <code>filename.log</code> (файл
+перезаписывается)</td>
+</tr>
+<tr>
+<td><code>ls . &gt;&gt; filename.log</code></td>
+<td>Направить стандартный вывод в файл <code>filename.log</code> (файл
+дозаписывается)</td>
+</tr>
+<tr>
+<td><code>ls . 2&gt; filename.log</code></td>
+<td>Направить вывод ошибок в файл <code>filename.log</code></td>
+</tr>
+<tr>
+<td><code>ls . 2&gt;&amp;1 &gt; filename.log</code></td>
+<td>Направить вывод ошибок в файл <code>filename.log</code></td>
+</tr>
+<tr>
+<td><code>ls . 2&gt;&amp;1 /dev/null</code></td>
+<td>Вывод в никуда</td>
+</tr>
+<tr>
+<td><code>ls . | wc</code></td>
+<td>Направить вывод <code>ls .</code> в <code>wc</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="работа-с-процессами" class="slide level2">
+<h2>Работа с процессами</h2>
+<p>Команда <code>ps aux</code> используется для вывода запущенных
+процессов</p>
+<p>Unix-диспетчер задач: <code>top</code> или <code>htop</code></p>
+<figure>
+<img data-src="images/htop.png" alt="htop" />
+<figcaption aria-hidden="true">htop</figcaption>
+</figure>
+</section>
+<section id="задание-2" class="slide level2">
+<h2>Задание 2</h2>
+<ul>
+<li>Выгрузите информацию о текущих процессах в файл с именем
+<code>processes.log</code></li>
+<li>Выведите содержимое файла с помощью команды <code>cat</code></li>
+<li>Попробуйте вывести содержимое несуществующего файла, вывод ошибок
+направьте в <code>errors.log</code></li>
+</ul>
+</section>
+<section id="шаблоны-поискафильтра" class="slide level2">
+<h2>Шаблоны поиска/фильтра</h2>
+<p>Есть возможность использовать шаблонные переменные:</p>
+<ul>
+<li><code>ans?er</code>: один любой символ</li>
+<li><code>answ*er</code>: любое количество любых символов</li>
+<li><code>ans[vw]er</code>: один из символов</li>
+</ul>
+</section>
+<section id="поиск-файловтекста" class="slide level2">
+<h2>Поиск файлов/текста</h2>
+<p>Основные утилиты:</p>
+<ul>
+<li><code>find</code>: поиск файл с определенным именем</li>
+<li><code>grep</code>: поиск определенного содержимого в файле</li>
+<li><code>sed</code>: редактирование текста в файле</li>
+</ul>
+</section>
+<section id="задание-3" class="slide level2">
+<h2>Задание 3</h2>
+<ul>
+<li>Найдите все упоминания <code>root</code> в
+<code>processes.log</code>, запишите в новый файл
+<code>processes-root.log</code></li>
+<li>Измените права файла <code>processes-root.log</code> на возможность
+только читать для всех-всех-всех</li>
+<li>Попробуйте заменить все упоминания <code>root</code> на
+<code>superuser</code></li>
+</ul>
+</section></section>
+    </div>
+  </div>
+
+  <script src=".//dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src=".//plugin/notes/notes.js"></script>
+  <script src=".//plugin/search/search.js"></script>
+  <script src=".//plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
