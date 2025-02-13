@@ -103,6 +103,19 @@
 <td><code>mkdir tmp</code></td>
 <td>Создать директорию <code>tmp</code></td>
 </tr>
+</tbody>
+</table>
+</section>
+<section id="основные-команды-1" class="slide level2">
+<h2>Основные команды</h2>
+<table>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td><code>rm file</code></td>
 <td>Удалить файл <code>file</code></td>
@@ -121,7 +134,7 @@
 <section id="все-есть-файл-или-директория" class="slide level2">
 <h2>Все есть файл или директория</h2>
 <p>Узнать подробную информацию: <code>ls -l ./</code></p>
-<pre style=" font-size: 18px;"><code>тип и права  коло-во  владелец   группа  размер  время последней  имя
+<pre><code>тип и права  коло-во  владелец   группа  размер  время последней  имя
               ссылок                                 модификации
 drwxr-xr-x         2   zavadvs  zavadvs    4096     Feb  4 12:31  Desktop/
 drwxr-xr-x         5   zavadvs  zavadvs    4096     Feb  5 18:19  Documents/
@@ -228,7 +241,7 @@ macOS: <code>brew install &lt;package&gt;</code>
 процессов</p>
 <p>Unix-диспетчер задач: <code>top</code> или <code>htop</code></p>
 <figure>
-<img data-src="images/htop.png" alt="htop" />
+<img data-src="images/01/htop.png" alt="htop" />
 <figcaption aria-hidden="true">htop</figcaption>
 </figure>
 </section>
@@ -272,6 +285,254 @@ macOS: <code>brew install &lt;package&gt;</code>
 <code>superuser</code></li>
 </ul>
 </section></section>
+<section>
+<section id="семинар-20250213" class="title-slide slide level1">
+<h1>Семинар 2025/02/13</h1>
+
+</section>
+<section id="структура-файловой-системы" class="slide level2">
+<h2>Структура файловой системы</h2>
+<figure>
+<img data-src="images/02/linux-directory-structure.png"
+alt="linux structure" />
+<figcaption aria-hidden="true">linux structure</figcaption>
+</figure>
+</section>
+<section id="разработка-в-команде" class="slide level2">
+<h2>Разработка в команде</h2>
+<ul>
+<li>Как хранить разные версии файлов?</li>
+<li>Как передавать код между программистами?</li>
+<li>Как запускать код на сервере?</li>
+<li>Как делиться своим кодом с общественностью?</li>
+</ul>
+</section>
+<section id="система-версионирования" class="slide level2">
+<h2>Система версионирования</h2>
+<ul>
+<li>Одна из основных: <code>git</code></li>
+<li>Есть еще другие: <code>svn</code>, <code>mercurial</code> <img
+data-src="images/02/git-workflow.png" alt="git workflow" /></li>
+</ul>
+</section>
+<section id="задание-1-1" class="slide level2">
+<h2>Задание 1</h2>
+<ul>
+<li>Установите git</li>
+<li>Убедитесь в установке</li>
+<li>Клонируйте свой первый репозиторий:
+https://github.com/xenoner1506/project</li>
+</ul>
+<p><code>git clone https://github.com/xenoner1506/project</code></p>
+</section>
+<section id="устройство-git-проекта" class="slide level2">
+<h2>Устройство git-проекта</h2>
+<ul>
+<li>Внутри каждого проекта есть директория
+<code>./project/.git</code></li>
+</ul>
+<figure>
+<img data-src="images/02/git-folder2.png" alt=".git" />
+<figcaption aria-hidden="true">.git</figcaption>
+</figure>
+</section>
+<section id="основные-команды-2" class="slide level2">
+<h2>Основные команды</h2>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Команда</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git clone &lt;link&gt;</code></td>
+<td>Копировать репозиторий по ссылке <code>&lt;link&gt;</code></td>
+</tr>
+<tr>
+<td><code>git status</code></td>
+<td>Узнать текущее состояние репозитория</td>
+</tr>
+<tr>
+<td><code>git add &lt;file&gt;</code></td>
+<td>Добавить файл в систему весрсионирования</td>
+</tr>
+<tr>
+<td><code>git commit</code></td>
+<td>Зафиксировать изменения, часто используется с
+<code>-m "..."</code></td>
+</tr>
+<tr>
+<td><code>git log</code></td>
+<td>Распечатать историю коммитов</td>
+</tr>
+<tr>
+<td><code>git checkout &lt;...&gt;</code></td>
+<td>Изменить файл, переместиться на ветку и т.д.</td>
+</tr>
+<tr>
+<td><code>git switch &lt;branch&gt;</code></td>
+<td>Переместиться на ветку</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="задание-2-1" class="slide level2">
+<h2>Задание 2</h2>
+<ul>
+<li>Обновите скрипт <code>example/script.sh</code>: добавьте строку для
+вывода переменной <code>$PWD</code></li>
+<li>Попробуйте закоммитить изменения</li>
+<li>Выполните команды
+<ul>
+<li><code>git config --local user.email "%YOUR EMAIL%"</code></li>
+<li><code>git config --local user.name "%YOUR NAME%"</code></li>
+</ul></li>
+<li>Повторите процедуру с коммитом</li>
+<li>Проверьте историю <code>git log --graph</code></li>
+</ul>
+</section>
+<section id="head-всему-голова" class="slide level2">
+<h2>HEAD всему голова</h2>
+<ul>
+<li>После добавления нового коммита <code>HEAD</code> переместился
+вперед, <code>origin/master</code> остался позади</li>
+<li><code>HEAD</code>: указатель на текущий коммит, может быть перемещен
+почти в любое место</li>
+<li><code>HEAD</code> имеет “два” состояния: <code>attached</code> и
+<code>detached</code></li>
+</ul>
+<figure>
+<img data-src="images/02/git-head.png" alt="HEAD" />
+<figcaption aria-hidden="true">HEAD</figcaption>
+</figure>
+</section>
+<section id="origin" class="slide level2">
+<h2>Origin</h2>
+<ul>
+<li>Устоявшееся обозначение для ссылки на удаленный (remote)
+репозиторий</li>
+<li>Условных <code>origin</code>’ов может быть несколько и с разными
+названиями</li>
+<li>Добавить новый <code>origin</code> можно с помощью команды
+<code>git remote add &lt;new-remote&gt; &lt;new-url&gt;</code></li>
+<li>Посмотреть информацию об удаленных репозиториях можно командой
+<code>git remote -v</code></li>
+</ul>
+</section>
+<section id="задание-3-1" class="slide level2">
+<h2>Задание 3</h2>
+<ul>
+<li>Создайте временный репозиторий на github.com</li>
+<li>Добавьте <code>new-origin</code> со своей ссылкой</li>
+<li>Запушьте изменения в свой репозиторий</li>
+</ul>
+</section>
+<section id="файл-.gitignore" class="slide level2">
+<h2>Файл .gitignore</h2>
+<ul>
+<li>В проекте могут хранится ключи или конфигурации</li>
+<li>Часть из них не должны быть публичными</li>
+<li>В ходе работы проекта появляются мусорные бинарники</li>
+<li>Можно запретить случайное добавление файлов в коммит, если добавить
+их в файл <code>.gitignore</code></li>
+<li>Поддерживает шаблоны</li>
+</ul>
+</section>
+<section id="задание-4" class="slide level2">
+<h2>Задание 4</h2>
+<ul>
+<li>Создайте файл с именем <code>useless.rb</code></li>
+<li>Добавьте строку <code>*.rb</code> в <code>.gitignore</code></li>
+<li>Проверьте <code>git status</code></li>
+</ul>
+</section>
+<section id="merge" class="slide level2">
+<h2>Merge</h2>
+<ul>
+<li>Разработка может вестись в нескольких ветках</li>
+<li>При сливании веток возможны конфликты</li>
+<li>Слияние веток
+(<code>&lt;source&gt; -&gt; &lt;destination&gt;</code>):
+<ul>
+<li><code>git checkout &lt;source&gt;</code> or
+<code>git switch &lt;source&gt;</code></li>
+<li><code>git merge &lt;destination&gt;</code></li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="images/02/merge.png" alt="Merge" />
+<figcaption aria-hidden="true">Merge</figcaption>
+</figure>
+</section>
+<section id="конфликты" class="slide level2">
+<h2>Конфликты</h2>
+<ul>
+<li>Если файл в <code>&lt;destination&gt;</code> был сильно изменен или
+удален, то как тогда такое добавлять из ветки
+<code>&lt;source&gt;</code>?</li>
+<li>Приходится решать конфликт</li>
+</ul>
+<figure>
+<img data-src="images/02/merge-conflict.png" alt="Conflict" />
+<figcaption aria-hidden="true">Conflict</figcaption>
+</figure>
+</section>
+<section id="rebase" class="slide level2">
+<h2>Rebase</h2>
+<ul>
+<li>Альтернативный вариант слияния веток
+<ul>
+<li><code>git checkout &lt;source&gt;</code> or
+<code>git switch &lt;source&gt;</code></li>
+<li><code>git rebase &lt;destination&gt;</code></li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="images/02/rebase.svg" alt="Rebase" />
+<figcaption aria-hidden="true">Rebase</figcaption>
+</figure>
+</section>
+<section id="rebase-1" class="slide level2">
+<h2>Rebase</h2>
+<ul>
+<li>Перемещение можно осуществить в интерактивном режиме</li>
+<li><code>git rebase &lt;destination&gt; -i</code></li>
+</ul>
+</section>
+<section id="задание-5" class="slide level2">
+<h2>Задание 5</h2>
+<ul>
+<li>Осуществите интерактивный <code>rebase</code> на основе ветки
+<code>feature/rebase-copy</code></li>
+</ul>
+</section>
+<section id="изменение-и-отмена-коммитов" class="slide level2">
+<h2>Изменение и отмена коммитов</h2>
+<ul>
+<li>Изменить название последнего коммита:
+<code>git commit --amend</code></li>
+<li>Отменить последний коммит (оставить изменения):
+<code>git reset --soft HEAD^</code></li>
+<li>Отменить последний коммит (удалить изменения):
+<code>git reset --hard HEAD^</code></li>
+<li>Отменить несколько последних коммитов:
+<code>git reset ... HEAD~n</code></li>
+</ul>
+</section>
+<section id="еще-несколько-полезных-команд" class="slide level2">
+<h2>Еще несколько полезных команд</h2>
+<p>Перетащить коммит на текущую ветку</p>
+</section></section>
+<section id="семинар-20250220" class="title-slide slide level1">
+<h1>Семинар 2025/02/20</h1>
+
+</section>
     </div>
   </div>
 
