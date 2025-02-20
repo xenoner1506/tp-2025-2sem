@@ -535,10 +535,283 @@ https://github.com/xenoner1506/project</li>
 <code>HEAD</code> по ссылке <code>origin</code></li>
 </ul>
 </section></section>
+<section>
 <section id="семинар-20250220" class="title-slide slide level1">
 <h1>Семинар 2025/02/20</h1>
 
 </section>
+<section id="bash" class="slide level2">
+<h2>Bash</h2>
+<ul>
+<li>Самый частый …</li>
+<li>Используется для написания сценариев</li>
+<li>Не самый удобный в понимании человеком</li>
+<li>Альтернативы: <code>zsh</code>, <code>fish</code></li>
+</ul>
+</section>
+<section id="переменные" class="slide level2">
+<h2>Переменные</h2>
+<ul>
+<li>Для определения переменной достаточно придумать ее имя</li>
+<li>Возможно переписать опредленную ранее переменную и все сломать</li>
+<li>Можно задаавть числа, строки, массивы, ассоциативные массивы и
+т.д.</li>
+<li>Переменная: просто подстановка значения</li>
+</ul>
+</section>
+<section id="упражнение-1" class="slide level2">
+<h2>Упражнение 1</h2>
+<p>Напишем свой первый (второй) скрипт</p>
+<ul>
+<li>Создайте файл <code>script.sh</code></li>
+<li>Определите переменную <code>VARIABLE</code> значением
+<code>$1</code></li>
+<li>Сделайте вывод в консоль переменной <code>VARIABLE</code></li>
+<li>Добавьте права на исполнения скрипта для всех</li>
+<li>Запустите скрипт: <code>./script.sh "Hello, B05-412"</code></li>
+</ul>
+</section>
+<section id="область-видимости-переменной" class="slide level2">
+<h2>Область видимости переменной</h2>
+<ul>
+<li>Проверим наличие переменной <code>VARIABLE</code> после запуска
+кода: <code>printenv | grep VARIABLE</code></li>
+<li>На самом деле запускается дочерняя среда <code>bash</code>, но из
+нее переменную никто не экспортировал</li>
+<li>Нужно добавить строку <code>export VARIABLE</code> для полноценного
+перемещения переменной из :Жцй</li>
+</ul>
+</section>
+<section id="кавычки" class="slide level2">
+<h2>Кавычки</h2>
+<p>Различают три вида кавычек:</p>
+<ul>
+<li><code>"</code> (двойные): используются для объединения текста,
+<strong>не</strong> игнорируют <code>$</code>, <code></code>
+<code>и</code>`</li>
+<li><code>'</code> (одинарные): используются для объединения текста,
+игнорирует символ <code>$</code> и другие спецсимволы</li>
+<li><code></code>
+<code>(обратные): используются для выполнения команды (старый синтаксис, альтернатива для</code>$(…)`)</li>
+</ul>
+</section>
+<section id="кавычки-примеры" class="slide level2">
+<h2>Кавычки, примеры</h2>
+<pre><code>&gt; filenames=&quot;file0
+file1 main.cpp&quot;
+&gt; echo $filenames
+&lt; file0 file1 main.cpp
+
+&gt; echo &quot;$filenmaes&quot;    | &gt; echo &#39;$filenames&#39;   
+&lt; file0                | &lt; $filenames          
+file1 main.cpp         | &gt; echo &#39;\$filenames\n&#39;
+&gt; echo &quot;\$filenames&quot;   | &lt; \$filenames\n       
+&lt; &quot;$filenames&quot;         | 
+
+&gt; echo &quot;I found directories: `ls -d */`&quot;
+&lt; I found directories: dir0
+dir1
+dir2
+&gt; echo &quot;I found directories:&quot; `ls -d */`
+&lt; I found directories: dir0 dir1 dir2</code></pre>
+</section>
+<section id="ветвления" class="slide level2">
+<h2>Ветвления</h2>
+<pre><code>if something equal to zero
+then
+  commands
+else
+  commands
+fi</code></pre>
+<ul>
+<li><code>3 -ge 2</code>: больше или равно</li>
+<li><code>1 -lt 2</code>: меньше чем</li>
+<li><code>str0 &lt; str1</code>: меньше</li>
+<li><code>str0 &gt; str1</code>: больше (опасная)</li>
+</ul>
+</section>
+<section id="циклы" class="slide level2">
+<h2>Циклы</h2>
+<pre><code>for el in zero one two
+do
+  echo &quot;$el&quot;
+done
+
+for el in $(seq 0 1 10)  # seq start step stop
+do
+  echo &quot;$el&quot;
+done
+
+for (i = 0; i &lt; 10; i++)
+{
+  echo $i
+}</code></pre>
+</section>
+<section id="перменная-ifs" class="slide level2">
+<h2>Перменная <code>$IFS</code></h2>
+<ul>
+<li>IFS: Internal Field Separator</li>
+</ul>
+<p>Сравните вывод двух циклов</p>
+<pre><code>for el in $(cat filename.txt)
+do
+  echo &quot;$el&quot;
+done</code></pre>
+<pre><code>IFS=$&#39;\n&#39;
+for el in $(cat filename.txt)
+do
+  echo &quot;$el&quot;
+done</code></pre>
+</section>
+<section id="упражнение-2" class="slide level2">
+<h2>Упражнение 2</h2>
+<ul>
+<li>Напишите скрипт создания строки. Строка содержит цифры от 0 до 9 с
+разделитем <code>:</code></li>
+<li>Попробуйте пройтись по строке как по целому элементу</li>
+<li>Измените <code>$IFS</code> и разбейте строку по <code>:</code>,
+выведите элементы</li>
+</ul>
+</section>
+<section id="режим-работы-скрипта" class="slide level2">
+<h2>Режим работы скрипта</h2>
+<p>Рассмотрим два основных режима работы:</p>
+<ul>
+<li><code>set -x</code>: вывод всех исполняемых команд в стандартный
+поток, “дебаг” мод</li>
+<li><code>set -e</code>: прекращение работы скрипта при первой же
+ошибке</li>
+</ul>
+</section>
+<section id="фоновый-запуск-задач" class="slide level2">
+<h2>Фоновый запуск задач</h2>
+<ul>
+<li>Скрипт работает долго, но хотелось бы паработать над чем-то
+другим</li>
+<li>Для этого можно добавить <code>&amp;</code> в конце команды</li>
+<li>Если хотим убрать лишний вывод, то просто направим его в
+<code>&gt; /dev/null</code></li>
+<li>Пример:
+<code>for el in $(seq 0 1 10); do sleep 1; echo $el; done &amp;</code></li>
+<li>Пример:
+<code>for el in $(seq 0 1 10); do sleep 1; echo $el; done &gt; /dev/null &amp;</code></li>
+</ul>
+</section>
+<section id="упражнение-3" class="slide level2">
+<h2>Упражнение 3</h2>
+<ul>
+<li>Напишите скрипт с использованием опций <code>set -x -e</code></li>
+<li>Запустите цикл на от 0 до 100 с шагом 10</li>
+<li>Записывайте каждое второе число в файл</li>
+<li>Выводите в консоль размер получаемого файла</li>
+<li>Попробуйте запустить скрипт в фоновом режиме</li>
+</ul>
+</section>
+<section id="запуск-в-режиме-nohup-и-disown" class="slide level2">
+<h2>Запуск в режиме nohup и disown</h2>
+<ul>
+<li><code>nohup</code>: позволяет закрыть терминал и оставить в рабочем
+состоянии запущенную программу</li>
+<li><code>disown</code>: позволяет осуществить действие
+<code>nohup</code> для уже запущенного процесса</li>
+</ul>
+</section>
+<section id="зомби-процессы" class="slide level2">
+<h2>Зомби процессы</h2>
+<ul>
+<li>Комбинация клавиш <code>ctrl+z</code> посылает процессу сигнал
+остановки</li>
+<li>Процесс можно вернуть из фона командой <code>fg</code></li>
+<li>Команда <code>bg</code> переводит ранее остановленный процесс в
+фоновый режим работы</li>
+</ul>
+</section>
+<section id="упражнение-4" class="slide level2">
+<h2>Упражнение 4</h2>
+<ul>
+<li>Запустим скрипт из предыдущего упражнения снова без прямого перевода
+в фоновый режим выполнениия</li>
+<li>Пошлите сигнал остановки: <code>ctrl+z</code></li>
+<li>Проверьте состояние процесса через <code>htop</code></li>
+<li>Вернитесь к выполнения скрипта с помощью <code>fg</code>, повторите
+предыдущий пункт</li>
+<li>Попробуйте воспользоваться командой <code>bg</code></li>
+</ul>
+</section>
+<section id="функции" class="slide level2">
+<h2>Функции</h2>
+<ul>
+<li>bash позволяет создавать свои функции</li>
+<li>функции удобны для повторного использования</li>
+</ul>
+<pre><code>function my_first_bash_func() {
+  read -p &quot;Enter value: &quot; value
+  echo $(( value + 1))
+}
+
+my_first_bash_func</code></pre>
+</section>
+<section id="локальность-переменных-передача-аргументов"
+class="slide level2">
+<h2>Локальность переменных, передача аргументов</h2>
+<pre><code>value=10
+
+function my_first_bash_func() {
+local local_value=$1
+  echo $value $local_value
+}
+
+my_first_bash_func 15
+
+echo $local_value $value</code></pre>
+</section>
+<section id="парсинг-аргументов" class="slide level2">
+<h2>Парсинг аргументов</h2>
+<p>В скрипт можно передавать аргументы из командной строки</p>
+<ul>
+<li>Аргументы из командной строки получаем как в функциях:
+<code>$1 $2 ...</code></li>
+<li>Кто такие <code>$0</code>, <code>$@</code> и <code>$#</code>?</li>
+</ul>
+<pre><code>nargs=&quot;$#&quot;
+
+while [ $nargs -ge 0 ]
+do
+  echo $1
+nargs=$(( nargs - 1 ))
+  shift
+done</code></pre>
+<p><code>./script.sh 2 0 1 -2</code></p>
+</section>
+<section id="парсинг-аргументов-1" class="slide level2">
+<h2>Парсинг аргументов</h2>
+<pre><code>
+while getopts &quot;o:b&quot; opt; do
+  case ${opt} in
+    o)
+      echo &quot;Option -o was triggered with arg: $OPTARG&quot;
+      ;;
+    b)
+      echo &quot;Option -b was triggered, no args: $OPTARG&quot;
+    ?)
+      echo &quot;Invalid option: -${OPTARG}.&quot;
+      exit 1
+      ;;
+  esac
+done</code></pre>
+</section>
+<section id="линтер-для-bash" class="slide level2">
+<h2>Линтер для bash</h2>
+<ul>
+<li>Онлайн инструменты: https://www.shellcheck.net/</li>
+<li>VSCode расширения:
+<code>ext install timonwong.shellcheck</code></li>
+<li>Утилита линукс: <code>sudo apt install shellcheck</code></li>
+</ul>
+</section>
+<section id="упражнение-5" class="slide level2">
+<h2>Упражнение 5</h2>
+</section></section>
     </div>
   </div>
 
