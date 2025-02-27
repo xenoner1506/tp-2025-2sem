@@ -738,6 +738,15 @@ done</code></pre>
 <li>Перемещение на ветку <code>git switch &lt;branch&gt;</code></li>
 </ul>
 </section>
+<section id="hooks" class="slide level2">
+<h2>Hooks</h2>
+<ul>
+<li>Скрипты для автоматической проверки выполнения условий для
+определенных действий: <code>push</code>, <code>commit</code>,
+<code>pre-/post-</code></li>
+<li>Проверьте хуки в ветке <code>git switch feature/hooks</code></li>
+</ul>
+</section>
 <section id="stash" class="slide level2">
 <h2>stash</h2>
 <ul>
@@ -745,9 +754,20 @@ done</code></pre>
 спрятать</li>
 <li>Если срочно нужно перейти на ветку, то текущие наработки можно
 спрятать</li>
-<li><code>git stash</code></li>
+<li><code>git stash [-u|-a]</code></li>
+<li><code>git stash [-u|-a] [save "..."]</code></li>
 <li><code>git stash list</code></li>
 <li><code>git apply [&lt;name&gt;]</code></li>
+<li><code>git stash branch &lt;branch/name&gt;</code></li>
+</ul>
+</section>
+<section id="задание-1-2" class="slide level2">
+<h2>Задание 1</h2>
+<ul>
+<li>Внесите изменения в репозиторий: отредактируйте скрипты</li>
+<li>Добавьте один из скриптов в следующий коммит</li>
+<li>Спрячьте изменения</li>
+<li>Сделайте из изменений новую ветку</li>
 </ul>
 </section>
 <section id="merge" class="slide level2">
@@ -803,6 +823,9 @@ done</code></pre>
 <li><code>git rebase &lt;destination&gt; -i</code></li>
 </ul>
 </section>
+<section id="merge-vs-rebase" class="slide level2">
+<h2>Merge vs Rebase</h2>
+</section>
 <section id="задание-2-2" class="slide level2">
 <h2>Задание 2</h2>
 <ul>
@@ -812,9 +835,9 @@ done</code></pre>
 </section>
 <section id="журнал-изменений-reflog" class="slide level2">
 <h2>Журнал изменений, reflog</h2>
-<p><code>git reflog</code> позволяет просмотреть в хронологическом
-порядке действия с репозиторием</p>
 <ul>
+<li><code>git reflog</code> позволяет просмотреть в хронологическом
+порядке действия с репозиторием</li>
 <li><code>git reflog delete &lt;...&gt;</code> позволяет удалить
 выбранное действие</li>
 </ul>
@@ -824,6 +847,8 @@ done</code></pre>
 <ul>
 <li>Изменить название последнего коммита:
 <code>git commit --amend</code></li>
+<li>Отменить результаты последнего коммита добавлением нового коммита:
+<code>git revert HEAD^</code></li>
 <li>Отменить последний коммит (оставить изменения):
 <code>git reset --soft HEAD^</code></li>
 <li>Отменить последний коммит (удалить изменения):
@@ -872,6 +897,17 @@ done</code></pre>
 <li><code>git diff</code>: Посмотреть разницу с файлом/веткой</li>
 <li><code>git push origin HEAD</code>: Отправить изменения
 <code>HEAD</code> по ссылке <code>origin</code></li>
+</ul>
+</section>
+<section id="упрощение-работы-в-будующем" class="slide level2">
+<h2>Упрощение работы в будующем</h2>
+<ul>
+<li><code>lazygit</code>: “визуальная” утилита для работы с
+<code>git</code></li>
+<li>Утилиту можно установить на своем ПК, но на червере ее может не
+быть</li>
+<li>В течение семестра мы учимся работать с голым гитом и запоминаем
+команды</li>
 </ul>
 </section></section>
     </div>
