@@ -451,89 +451,6 @@ https://github.com/xenoner1506/project</li>
 <li>Добавьте строку <code>*.rb</code> в <code>.gitignore</code></li>
 <li>Проверьте <code>git status</code></li>
 </ul>
-</section>
-<section id="merge" class="slide level2">
-<h2>Merge</h2>
-<ul>
-<li>Разработка может вестись в нескольких ветках</li>
-<li>При сливании веток возможны конфликты</li>
-<li>Слияние веток
-(<code>&lt;source&gt; -&gt; &lt;destination&gt;</code>):
-<ul>
-<li><code>git checkout &lt;source&gt;</code> or
-<code>git switch &lt;source&gt;</code></li>
-<li><code>git merge &lt;destination&gt;</code></li>
-</ul></li>
-</ul>
-<figure>
-<img data-src="images/02/merge.png" alt="Merge" />
-<figcaption aria-hidden="true">Merge</figcaption>
-</figure>
-</section>
-<section id="конфликты" class="slide level2">
-<h2>Конфликты</h2>
-<ul>
-<li>Если файл в <code>&lt;destination&gt;</code> был сильно изменен или
-удален, то как тогда такое добавлять из ветки
-<code>&lt;source&gt;</code>?</li>
-<li>Приходится решать конфликт</li>
-</ul>
-<figure>
-<img data-src="images/02/merge-conflict.png" alt="Conflict" />
-<figcaption aria-hidden="true">Conflict</figcaption>
-</figure>
-</section>
-<section id="rebase" class="slide level2">
-<h2>Rebase</h2>
-<ul>
-<li>Альтернативный вариант слияния веток
-<ul>
-<li><code>git checkout &lt;source&gt;</code> or
-<code>git switch &lt;source&gt;</code></li>
-<li><code>git rebase &lt;destination&gt;</code></li>
-</ul></li>
-</ul>
-<figure>
-<img data-src="images/02/rebase.svg" alt="Rebase" />
-<figcaption aria-hidden="true">Rebase</figcaption>
-</figure>
-</section>
-<section id="rebase-1" class="slide level2">
-<h2>Rebase</h2>
-<ul>
-<li>Перемещение можно осуществить в интерактивном режиме</li>
-<li><code>git rebase &lt;destination&gt; -i</code></li>
-</ul>
-</section>
-<section id="задание-5" class="slide level2">
-<h2>Задание 5</h2>
-<ul>
-<li>Осуществите интерактивный <code>rebase</code> на основе ветки
-<code>feature/rebase-copy</code></li>
-</ul>
-</section>
-<section id="изменение-и-отмена-коммитов" class="slide level2">
-<h2>Изменение и отмена коммитов</h2>
-<ul>
-<li>Изменить название последнего коммита:
-<code>git commit --amend</code></li>
-<li>Отменить последний коммит (оставить изменения):
-<code>git reset --soft HEAD^</code></li>
-<li>Отменить последний коммит (удалить изменения):
-<code>git reset --hard HEAD^</code></li>
-<li>Отменить несколько последних коммитов:
-<code>git reset ... HEAD~n</code></li>
-</ul>
-</section>
-<section id="еще-несколько-полезных-команд" class="slide level2">
-<h2>Еще несколько полезных команд</h2>
-<ul>
-<li><code>git cherry-pick &lt;hash&gt;</code>: Перетащить коммит
-<code>&lt;hash&gt;</code> на текущую ветку</li>
-<li><code>git diff</code>: Посмотреть разницу с файлом/веткой</li>
-<li><code>git push origin HEAD</code>: Отправить изменения
-<code>HEAD</code> по ссылке <code>origin</code></li>
-</ul>
 </section></section>
 <section>
 <section id="семинар-20250220" class="title-slide slide level1">
@@ -579,7 +496,7 @@ https://github.com/xenoner1506/project</li>
 <li>На самом деле запускается дочерняя среда <code>bash</code>, но из
 нее переменную никто не экспортировал</li>
 <li>Нужно добавить строку <code>export VARIABLE</code> для полноценного
-перемещения переменной из :Жцй</li>
+перемещения переменной из дочернего окружения</li>
 </ul>
 </section>
 <section id="кавычки" class="slide level2">
@@ -587,12 +504,11 @@ https://github.com/xenoner1506/project</li>
 <p>Различают три вида кавычек:</p>
 <ul>
 <li><code>"</code> (двойные): используются для объединения текста,
-<strong>не</strong> игнорируют <code>$</code>, <code></code>
-<code>и</code>`</li>
+<strong>не</strong> игнорируют <code>$, , \</code></li>
 <li><code>'</code> (одинарные): используются для объединения текста,
 игнорирует символ <code>$</code> и другие спецсимволы</li>
-<li><code></code>
-<code>(обратные): используются для выполнения команды (старый синтаксис, альтернатива для</code>$(…)`)</li>
+<li>` (обратные): используются для выполнения команды (старый синтаксис,
+альтернатива для <code>$(...)</code>)</li>
 </ul>
 </section>
 <section id="кавычки-примеры" class="slide level2">
@@ -808,9 +724,155 @@ done</code></pre>
 <code>ext install timonwong.shellcheck</code></li>
 <li>Утилита линукс: <code>sudo apt install shellcheck</code></li>
 </ul>
+</section></section>
+<section>
+<section id="семинар-20250226" class="title-slide slide level1">
+<h1>Семинар 2025/02/26</h1>
+
 </section>
-<section id="упражнение-5" class="slide level2">
-<h2>Упражнение 5</h2>
+<section id="краткое-напоминание" class="slide level2">
+<h2>Краткое напоминание</h2>
+<ul>
+<li><code>git clone https://github.com/xenoner1506/project</code></li>
+<li>Просмотреть ветки <code>git branch -a</code></li>
+<li>Перемещение на ветку <code>git switch &lt;branch&gt;</code></li>
+</ul>
+</section>
+<section id="stash" class="slide level2">
+<h2>stash</h2>
+<ul>
+<li>Если есть наработки и нет желания коммитить, то их можно
+спрятать</li>
+<li>Если срочно нужно перейти на ветку, то текущие наработки можно
+спрятать</li>
+<li><code>git stash</code></li>
+<li><code>git stash list</code></li>
+<li><code>git apply [&lt;name&gt;]</code></li>
+</ul>
+</section>
+<section id="merge" class="slide level2">
+<h2>Merge</h2>
+<ul>
+<li>Разработка может вестись в нескольких ветках</li>
+<li>При сливании веток возможны конфликты</li>
+<li>Слияние веток
+(<code>&lt;source&gt; -&gt; &lt;destination&gt;</code>):
+<ul>
+<li><code>git checkout &lt;source&gt;</code> or
+<code>git switch &lt;source&gt;</code></li>
+<li><code>git merge &lt;destination&gt;</code></li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="images/04/merge.png" alt="Merge" />
+<figcaption aria-hidden="true">Merge</figcaption>
+</figure>
+</section>
+<section id="конфликты" class="slide level2">
+<h2>Конфликты</h2>
+<ul>
+<li>Если файл в <code>&lt;destination&gt;</code> был сильно изменен или
+удален, то как тогда такое добавлять из ветки
+<code>&lt;source&gt;</code>?</li>
+<li>Приходится решать конфликт</li>
+</ul>
+<figure>
+<img data-src="images/04/merge-conflict.png" alt="Conflict" />
+<figcaption aria-hidden="true">Conflict</figcaption>
+</figure>
+</section>
+<section id="rebase" class="slide level2">
+<h2>Rebase</h2>
+<ul>
+<li>Альтернативный вариант слияния веток
+<ul>
+<li><code>git checkout &lt;source&gt;</code> or
+<code>git switch &lt;source&gt;</code></li>
+<li><code>git rebase &lt;destination&gt;</code></li>
+</ul></li>
+</ul>
+<figure>
+<img data-src="images/04/rebase.svg" alt="Rebase" />
+<figcaption aria-hidden="true">Rebase</figcaption>
+</figure>
+</section>
+<section id="rebase-1" class="slide level2">
+<h2>Rebase</h2>
+<ul>
+<li>Перемещение можно осуществить в интерактивном режиме</li>
+<li><code>git rebase &lt;destination&gt; -i</code></li>
+</ul>
+</section>
+<section id="задание-2-2" class="slide level2">
+<h2>Задание 2</h2>
+<ul>
+<li>Осуществите интерактивный <code>rebase</code> ветки
+<code>feature/rebase-copy</code> на ветку <code>master</code></li>
+</ul>
+</section>
+<section id="журнал-изменений-reflog" class="slide level2">
+<h2>Журнал изменений, reflog</h2>
+<p><code>git reflog</code> позволяет просмотреть в хронологическом
+порядке действия с репозиторием</p>
+<ul>
+<li><code>git reflog delete &lt;...&gt;</code> позволяет удалить
+выбранное действие</li>
+</ul>
+</section>
+<section id="изменение-и-отмена-коммитов" class="slide level2">
+<h2>Изменение и отмена коммитов</h2>
+<ul>
+<li>Изменить название последнего коммита:
+<code>git commit --amend</code></li>
+<li>Отменить последний коммит (оставить изменения):
+<code>git reset --soft HEAD^</code></li>
+<li>Отменить последний коммит (удалить изменения):
+<code>git reset --hard HEAD^</code></li>
+<li>Отменить несколько последних коммитов:
+<code>git reset ... HEAD~n</code></li>
+<li>Отменить несколько последних коммитов:
+<code>git reset ... HEAD@{n}</code></li>
+</ul>
+</section>
+<section id="lfs" class="slide level2">
+<h2>LFS</h2>
+<p>Большие бинарные файлы не стоит прямо в git хранить</p>
+<p>Для этого существует Large File Storage (LFS)</p>
+<ul>
+<li><code>sudo apt install git-lfs</code></li>
+<li><code>git lfs "*.ext"</code></li>
+</ul>
+</section>
+<section id="добавление-submodules" class="slide level2">
+<h2>Добавление submodules</h2>
+<ul>
+<li>Нужно использовать другие проекты для сборки</li>
+<li>Проект очень большой и выделяются логические отдельные модули</li>
+<li><code>git submodule add &lt;remote&gt; &lt;path-to-submodule&gt;</code></li>
+<li><code>git submodule init -- &lt;path-to-submodule&gt;</code></li>
+<li><code>git submodule update</code></li>
+</ul>
+</section>
+<section id="удаление-submodules" class="slide level2">
+<h2>Удаление submodules</h2>
+<ul>
+<li>Очищаем секцию в <code>.gitmodules</code>, добавляем в коммит</li>
+<li>Убираем упоминание из <code>.git/config</code></li>
+<li>Удаляем директорию подмодуля из <code>.git</code>:
+<code>.git/modules/submodule</code></li>
+<li><code>git commit ...</code></li>
+<li>Удаляем артефакты</li>
+</ul>
+</section>
+<section id="еще-несколько-полезных-команд" class="slide level2">
+<h2>Еще несколько полезных команд</h2>
+<ul>
+<li><code>git cherry-pick &lt;hash&gt;</code>: Перетащить коммит
+<code>&lt;hash&gt;</code> на текущую ветку</li>
+<li><code>git diff</code>: Посмотреть разницу с файлом/веткой</li>
+<li><code>git push origin HEAD</code>: Отправить изменения
+<code>HEAD</code> по ссылке <code>origin</code></li>
+</ul>
 </section></section>
     </div>
   </div>
