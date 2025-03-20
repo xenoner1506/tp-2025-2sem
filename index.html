@@ -13,7 +13,7 @@
     .reveal .sourceCode {  /* see #7635 */
       overflow: visible;
     }
-    code{white-space: pre-wrap; background-color: red; }
+    code{white-space: pre-wrap;}
     td{font-size: 24px; }
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -1337,27 +1337,158 @@ class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb15-1"><a hre
 <div class="sourceCode" id="cb16"><pre
 class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span>(<span class="dv">CMAKE_RUNTIME_OUTPUT_DIRECTORY</span> <span class="dv">${PROJECT_SOURCE_DIR}</span>/bin)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span>(<span class="dv">CMAKE_LIBRARY_OUTPUT_DIRECTORY</span> <span class="dv">${PROJECT_SOURCE_DIR}</span>/lib)</span></code></pre></div>
+</section></section>
+<section>
+<section id="семинар-20250420" class="title-slide slide level1">
+<h1>Семинар 2025/04/20</h1>
+
+</section>
+<section id="вложенные-cmakelists.txt" class="slide level2">
+<h2>Вложенные CMakeLists.txt</h2>
+<!-- [Nested CMakeLists](images/07/cmakes-nested.png) -->
+<p><img align="right" src="images/07/cmakes-nested.png"></p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ./CMakeLists.txt (root)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">add_subdirectory</span>(pattern)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span>(SOURCES</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">${PATTERN_SOURCES}</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ./pattern/CMakeLists.txt (nested)</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span>(PATTERN_SOURCES</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  path/to/file.cpp</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="ot">PARENT_SCOPE</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span>(PATTERN_HEADERS</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  file.hpp</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="ot">PARENT_SCOPE</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</section>
+<section id="сборка-библиотек" class="slide level2">
+<h2>Сборка библиотек</h2>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">include_directories</span>(<span class="dv">${CMAKE_CURRENT_SOURCE_DIR}</span>/include)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">add_library</span>(<span class="dv">${LIBNAME}</span> <span class="bn">SHARED</span> <span class="dv">${LIBSOURCES}</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="kw">target_link_libraries</span>(<span class="dv">${PROJECT_EXECUTABLE}</span> <span class="er">[PRIVATE|PUBLIC] ${LIBNAME})</span></span></code></pre></div>
+<ul>
+<li><code>PRIVATE|PUBLIC</code>: указывает способ подключения бибилиотек
+в случае многоуровневой зависимости. Связано со способом создания
+библиотеки <code>SHARED|STATIC</code>.</li>
+</ul>
+</section>
+<section id="подключение-уже-установленных" class="slide level2">
+<h2>Подключение уже установленных</h2>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">find_package</span>(LIBNAME <span class="ot">REQUIRED</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="dv">LIBNAME_FOUND</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">message</span>(<span class="ot">STATUS</span> <span class="st">&quot;found LIBNAME in </span><span class="dv">${LIBNAME_INCLUDE_DIRS}</span><span class="st">&quot;</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>(LIBNAME_FOUND)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">message</span>(<span class="ot">FATAL_ERROR</span> <span class="st">&quot;LIBNAME not found&quot;</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">endif</span>(LIBNAME_FOUND)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="kw">include_directories</span>(</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">${LIBNAME_INCLUDE_DIRS}</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="kw">target_link_libraries</span>(<span class="dv">${PROJECT_EXECUTABLE}</span> <span class="dv">${LIBNAME_LIBRARIES}</span>)</span></code></pre></div>
+</section>
+<section id="подключение-уже-установленных-1" class="slide level2">
+<h2>Подключение уже установленных</h2>
+<ul>
+<li>Поиск библиотек производится в:
+<ul>
+<li>пути <code>/usr/lib/x86_64-linux-gnu/cmake</code></li>
+<li>путях переменной <code>CMAKE_PREFIX_PATH</code></li>
+<li>пути с дополнительными утилитами <code>$PROJECT/cmake/</code></li>
+</ul></li>
+<li>Можно передать значение переменной с помощью флага
+<code>-D</code></li>
+</ul>
 </section>
 <section id="подгрузка-сторонних-библиотек" class="slide level2">
 <h2>Подгрузка сторонних библиотек</h2>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">include</span>(<span class="im">FetchContent</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span>(FETCHCONTENT_BASE_DIR <span class="dv">${Strategy_SOURCE_DIR}</span>/external)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">FetchContent_Declare</span>(</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    json_lib</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="ot">GIT_REPOSITORY</span> https://github.com/nlohmann/json.git</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="ot">GIT_TAG</span>        v3.<span class="dt">11.0</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">FetchContent_MakeAvailable</span>(json_lib)</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="kw">include_directories</span>(</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    external/json_lib-src/include/</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    ...</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">include</span>(<span class="im">FetchContent</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">FetchContent_Declare</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    LIBNAME</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="ot">GIT_REPOSITORY</span> https://github.com/library/link.git</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="ot">GIT_TAG</span>        v1.<span class="dt">0.0</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">FetchContent_MakeAvailable</span>(LIBNAME)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="kw">execute_process</span>(<span class="ot">COMMAND</span> -S . -B <span class="dv">${LIBNAME_BINARY_DIR}</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>                <span class="ot">WORKING_DIRECTORY</span> <span class="dv">${LIBNAME_SOURCE_DIR}</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="kw">execute_process</span>(<span class="ot">COMMAND</span> -B . <span class="ot">WORKING_DIRECTORY</span> <span class="dv">${LIBNAME_BINARY_DIR}</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="er">...</span></span></code></pre></div>
+</section>
+<section id="пользовательские-модули" class="slide level2">
+<h2>Пользовательские модули</h2>
+<ul>
+<li>Модули пользователя могут быть сохранены в директории
+<code>cmake</code> корня проекта: <code>project/cmake</code></li>
+<li>Название пользовательского модуля может быть любым, но опредленного
+расширения: <code>*.cmake</code></li>
+</ul>
+</section>
+<section id="пользовательские-цели" class="slide level2">
+<h2>Пользовательские цели</h2>
+<pre><code>add_custom_target(target_name
+  COMMAND ${CMAKE_COMMAND} -E remove_directory ${PROJECT_SOURCE_DIR}/
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/../
+  COMMENT &quot;Delete ${PROJECT_BUILD_DIR}/&quot;
+  VERBATIM
+)</code></pre>
+</section>
+<section id="утилита-ccmake" class="slide level2">
+<h2>Утилита ccmake</h2>
+<ul>
+<li>Есть консольный GUI для удобного определения включения опций</li>
+<li>Установка: <code>sudo apt install cmake-curses-gui</code></li>
+<li>Запуск: <code>ccmake ../</code></li>
+</ul>
+</section>
+<section id="утилита-ccmake-1" class="slide level2">
+<h2>Утилита ccmake</h2>
+<p><img align="center" src="images/07/ccmake.png"></p>
+</section>
+<section id="пакетный-менеджер-vcpkg" class="slide level2">
+<h2>Пакетный менеджер vcpkg</h2>
+<ul>
+<li>Удобный способ устанавливать библиотеки в проекте</li>
+<li>Не требует прямого прописывания дейтсвий по сборке проекта и
+дополнительных библиотек</li>
+<li>Конфигурации в формате JSON-файла</li>
+<li>Документация по установке:
+https://learn.microsoft.com/en-us/vcpkg/get_started/get-started</li>
+</ul>
+</section>
+<section id="пакетный-менеджер-conan" class="slide level2">
+<h2>Пакетный менеджер conan</h2>
+<ul>
+<li>Еще один пакетный менеджер для С++</li>
+<li>Позволяет хранить конфигурации в формате CFG</li>
+<li>Установить можно через Python: <code>pip install conan</code></li>
+</ul>
+</section>
+<section id="python" class="slide level2">
+<h2>Python</h2>
+<ul>
+<li>Сложности с зависимостями</li>
+<li>Нужно создавать отдельно окружение: <code>virtual-env</code></li>
+</ul>
+</section>
+<section id="pip" class="slide level2">
+<h2>pip</h2>
+<ul>
+<li>Пакетный менеджер для библиотек</li>
+<li>Использует кеш</li>
+<li>Не любит решать конфликты</li>
+</ul>
 </section></section>
     </div>
   </div>
