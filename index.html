@@ -1490,6 +1490,149 @@ https://learn.microsoft.com/en-us/vcpkg/get_started/get-started</li>
 <li>Не любит решать конфликты</li>
 </ul>
 </section></section>
+<section>
+<section id="семинар-20250327" class="title-slide slide level1">
+<h1>Семинар 2025/03/27</h1>
+
+</section>
+<section id="пирамида-тестирования" class="slide level2">
+<h2>Пирамида тестирования</h2>
+<p><img align="center" src="images/08/testing_pyramid.png"></p>
+</section>
+<section id="пирамида-тестирования-1" class="slide level2">
+<h2>Пирамида тестирования</h2>
+<ul>
+<li>С уровнем пирамиды:
+<ul>
+<li>Количество тестов уменьшается</li>
+<li>Стоимость тестов растет</li>
+<li>Повышается сложность</li>
+</ul></li>
+<li>State of art тестирования: формальная верификация</li>
+</ul>
+</section>
+<section id="unit-testing" class="slide level2">
+<h2>Unit testing</h2>
+<ul>
+<li>Тестируем модули класса</li>
+<li>Проверяем на корректонсть вывод функции</li>
+<li>Прорабатываем количество тестов для полного покрытия возможных
+ситуаций</li>
+<li>Белый ящик: структура кода известна</li>
+<li>Разработчик ответственен за наличие модульных тестов</li>
+</ul>
+</section>
+<section id="component-testing" class="slide level2">
+<h2>Component testing</h2>
+<ul>
+<li>Проверяем корректность взаимодействия модулей</li>
+<li>Подхватывается бизнес логика</li>
+<li>Область ответственности тестировщика</li>
+</ul>
+</section>
+<section id="integration-testing" class="slide level2">
+<h2>Integration testing</h2>
+<ul>
+<li>Тестируем взаимодействие компонент: бэкенд+фронтенд</li>
+<li>Взаимодействия бэкенда и базы данных</li>
+<li>Взаимодействие микросервисов</li>
+</ul>
+</section>
+<section id="system-testing" class="slide level2">
+<h2>System testing</h2>
+<ul>
+<li>Черный ящик: есть входные данные и ожидаемый результат</li>
+<li>Тестирование продукта как единого целого: взаимодействие интерфесов
+между компонентами не интересует</li>
+</ul>
+</section>
+<section id="manual-testing" class="slide level2">
+<h2>Manual testing</h2>
+<ul>
+<li>Ручное тестирование</li>
+<li>Тестировщик взаимодействует с продуктом как конечный
+пользователь</li>
+</ul>
+</section>
+<section id="test-driven-development-tdd" class="slide level2">
+<h2>Test Driven Development (TDD)</h2>
+<ul>
+<li>Определяем входные и выходные данные (тест)</li>
+<li>Пишем код, который проходит тест</li>
+<li>Повторяем итерации и в конце рефакторим код</li>
+</ul>
+</section>
+<section id="test-driven-development-tdd-1" class="slide level2">
+<h2>Test Driven Development (TDD)</h2>
+<p><img align="center" src="images/08/TDD.png"></p>
+</section>
+<section id="fixtures" class="slide level2">
+<h2>Fixtures</h2>
+<ul>
+<li>Требуется подготовить класс</li>
+<li>Подготовка занимает много времени</li>
+<li>Создаем объект один раз и проверяем на нем тесты</li>
+<li>Между тестами сбрасываем состояние к начальному</li>
+</ul>
+<p><img align="right" src="images/08/fixture.png"></p>
+</section>
+<section id="mocking" class="slide level2">
+<h2>Mocking</h2>
+<ul>
+<li>Как провести тест платного API без прямого доступа?</li>
+<li>Как провести полноценное тестирование фронтенда без прямого
+подключения БД?</li>
+<li>Ответ оъекта известен, но он не доступен/не реализован</li>
+</ul>
+</section>
+<section id="mocking-1" class="slide level2">
+<h2>Mocking</h2>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MockSingleton <span class="op">:</span> <span class="kw">public</span> Singleton <span class="op">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    MOCK_METHOD<span class="op">(</span><span class="dt">bool</span><span class="op">,</span> isInitialized<span class="op">,</span> <span class="op">(),</span> <span class="op">(</span><span class="at">const</span><span class="op">,</span> <span class="kw">override</span><span class="op">));</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>TEST<span class="op">(</span>SingletonTest<span class="op">,</span> CheckValue<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  MockSingleton singleton<span class="op">;</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  EXPECT_CALL<span class="op">(</span>singleton<span class="op">,</span> isInitialized<span class="op">())</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>Times<span class="op">(</span>AtLeast<span class="op">(</span><span class="dv">1</span><span class="op">))</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span>WillOnce<span class="op">(</span>Return<span class="op">(</span><span class="kw">true</span><span class="op">));</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">auto</span> result <span class="op">=</span> singleton<span class="op">.</span>isInitialized<span class="op">();</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  ASSERT_EQ<span class="op">(</span>result<span class="op">,</span> <span class="kw">true</span><span class="op">);</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+</section>
+<section id="покрытие-кода" class="slide level2">
+<h2>Покрытие кода</h2>
+<ul>
+<li>Покрытие строк (Statement Coverage)</li>
+<li>Покрытие ветвлений (Branch Coverage)</li>
+</ul>
+</section>
+<section id="gcov" class="slide level2">
+<h2>gcov</h2>
+<ul>
+<li>Собирает информацию об количестве запусков строк кода</li>
+<li>Для сбора информации требуется обязательно передать ключи:
+<code>-fprofile-arcs -ftest-coverage</code></li>
+</ul>
+</section>
+<section id="lcov" class="slide level2">
+<h2>lcov</h2>
+<ul>
+<li>Формирует отчет о покрытии на основе артефактов
+<code>gcov</code></li>
+</ul>
+</section>
+<section id="библиотеки-для-тестирования" class="slide level2">
+<h2>Библиотеки для тестирования</h2>
+<ul>
+<li>C++: Boost::Test, GTest</li>
+<li>Python: pytest, unittest</li>
+</ul>
+</section></section>
     </div>
   </div>
 
