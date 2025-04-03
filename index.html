@@ -1633,6 +1633,151 @@ class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb22-1"><a href="#
 <li>Python: pytest, unittest</li>
 </ul>
 </section></section>
+<section>
+<section id="семинар-20250402" class="title-slide slide level1">
+<h1>Семинар 2025/04/02</h1>
+
+</section>
+<section id="типы-тестирующих-объектов" class="slide level2">
+<h2>Типы тестирующих объектов</h2>
+<ul>
+<li>Dummy
+<ul>
+<li>Просто возвращает значение</li>
+<li>Не несет в себе сложной логики</li>
+</ul></li>
+<li>Stub
+<ul>
+<li>Определены методы и их поведение</li>
+<li>Заготовлены ответы</li>
+</ul></li>
+</ul>
+</section>
+<section id="типы-тестирующих-объектов-1" class="slide level2">
+<h2>Типы тестирующих объектов</h2>
+<ul>
+<li>Spy
+<ul>
+<li>Подсчитывают обращения к методам/объектам</li>
+</ul></li>
+<li>Mock
+<ul>
+<li>Могут контролировать последовательность действий</li>
+</ul></li>
+</ul>
+</section>
+<section id="тестирование-python" class="slide level2">
+<h2>Тестирование Python</h2>
+<ul>
+<li>Две основные библиотеки: unittest и pytest</li>
+</ul>
+</section>
+<section id="pytest" class="slide level2">
+<h2>pytest</h2>
+<ul>
+<li>Есть обзий конфигурационный файл: <code>conftest.py</code></li>
+<li>Файл может содержать фикстуры или общие функции для тестов</li>
+</ul>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> data():</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_data(data):</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">assert</span> data <span class="op">==</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
+</section>
+<section id="pytest.fixture" class="slide level2">
+<h2>pytest.fixture</h2>
+<ul>
+<li>Фикстура может быть с параметрами (params)</li>
+<li>Фикстура имеет область использования (scope): session, module,
+class, function</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">&quot;module&quot;</span>, params<span class="op">=</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>])</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> data(tested):</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tested.param</span></code></pre></div>
+</section>
+<section id="unittest" class="slide level2">
+<h2>unittest</h2>
+<ul>
+<li>Создается класс для тестирования</li>
+<li>Метод класса – проверка определенной функциональности</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> unittest</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> even <span class="im">import</span> is_even</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestIsEven(unittest.TestCase):</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_even_number(<span class="va">self</span>):</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.assertEqual(is_even(<span class="dv">2</span>), <span class="va">True</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_odd_number(<span class="va">self</span>):</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.assertEqual(is_even(<span class="dv">3</span>), <span class="va">False</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_negative_even_number(<span class="va">self</span>):</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.assertEqual(is_even(<span class="op">-</span><span class="dv">2</span>), <span class="va">True</span>)</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_negative_odd_number(<span class="va">self</span>):</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.assertEqual(is_even(<span class="op">-</span><span class="dv">3</span>), <span class="va">False</span>)</span></code></pre></div>
+<ul>
+<li><a href="https://realpython.com/python-unittest/">источник</a></li>
+</ul>
+</section>
+<section id="unittest-1" class="slide level2">
+<h2>unittest</h2>
+<ul>
+<li>Можно создавать группу подтестов</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestIsEven(unittest.TestCase):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_even_number(<span class="va">self</span>):</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> number <span class="kw">in</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="op">-</span><span class="dv">8</span>, <span class="op">-</span><span class="dv">10</span>, <span class="op">-</span><span class="dv">12</span>]:</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> <span class="va">self</span>.subTest(number<span class="op">=</span>number):</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.assertEqual(is_even(number), <span class="va">True</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_odd_number(<span class="va">self</span>):</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> number <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="op">-</span><span class="dv">7</span>, <span class="op">-</span><span class="dv">9</span>, <span class="op">-</span><span class="dv">11</span>]:</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> <span class="va">self</span>.subTest(number<span class="op">=</span>number):</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.assertEqual(is_even(number), <span class="va">False</span>)</span></code></pre></div>
+<ul>
+<li><a href="https://realpython.com/python-unittest/">источник</a></li>
+</ul>
+</section>
+<section id="unittest.mock" class="slide level2">
+<h2>unittest.mock</h2>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> unittest.mock <span class="im">import</span> Mock</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_get_standings_mock():</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    mock_session <span class="op">=</span> Mock()</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    mock_session.get.return_value.status_code <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    mock_session.get.return_value.json.return_value <span class="op">=</span> json.loads(data)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    standings <span class="op">=</span> get_standings(<span class="dv">1</span>, mock_session)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    mock_session.get.return_value.json.called_once()</span></code></pre></div>
+</section>
+<section id="тестирование-api" class="slide level2">
+<h2>Тестирование API</h2>
+<ul>
+<li>Можно производить с помощью модулей <code>mock</code> и
+<code>requests_mock</code></li>
+<li>Пример:</li>
+</ul>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests_mock</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="at">@requests_mock.Mocker</span>()</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_function(m):</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    m.get(<span class="st">&#39;http://test.com&#39;</span>, text<span class="op">=</span><span class="st">&#39;resp&#39;</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> requests.get(<span class="st">&#39;http://test.com&#39;</span>).text</span></code></pre></div>
+</section>
+<section id="покрытие" class="slide level2">
+<h2>Покрытие</h2>
+<ul>
+<li><code>coverage run --branch -m pytest -sv ./tests --ommit="submodules/*"</code></li>
+<li><code>coverage html</code></li>
+</ul>
+</section></section>
     </div>
   </div>
 
