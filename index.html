@@ -1778,6 +1778,398 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a h
 <li><code>coverage html</code></li>
 </ul>
 </section></section>
+<section>
+<section id="семинар-20250409" class="title-slide slide level1">
+<h1>Семинар 2025/04/09</h1>
+
+</section>
+<section id="образ-vs-контейнер" class="slide level2">
+<h2>Образ VS контейнер</h2>
+<ul>
+<li>Образ: шаблон для последущих запусков, состоит из read-only
+слоев</li>
+<li>Контейнер: запущеный образ, самый верхний слой read-write</li>
+</ul>
+</section>
+<section id="жизненый-цикл-контейнера" class="slide level2">
+<h2>Жизненый цикл контейнера</h2>
+<p><img align="center" src="images/10/container-lifecycle.png"></p>
+</section>
+<section id="первый-запуск-1" class="slide level2">
+<h2>Первый запуск</h2>
+<ul>
+<li>Репозиторий с примерами:
+https://github.com/xenoner1506/tp-notes-code/tree/master/week11</li>
+<li><code>docker pull hello-world</code>: скачать контейнер</li>
+<li><code>docker run hello-world</code>: запустить контейнер (2
+команды)</li>
+</ul>
+</section>
+<section id="первый-запуск-2" class="slide level2">
+<h2>Первый запуск</h2>
+<ul>
+<li><code>docker run hello-world</code>: запустить контейнер (2 команды)
+<ul>
+<li><code>docker create</code>: создать новый контейнер</li>
+<li><code>docker start</code>: запустить контейнер</li>
+</ul></li>
+<li>Можем перезапустить контейнер
+<ul>
+<li><code>docker ps -a</code>: посмотреть ранее запущенные
+контейнеры</li>
+</ul></li>
+</ul>
+</section>
+<section id="запуск-в-интерактивном-режиме" class="slide level2">
+<h2>Запуск в интерактивном режиме</h2>
+<ul>
+<li><code>docker run -it ...</code>
+<ul>
+<li><code>-i</code>: перехвать STDIN</li>
+<li><code>-t</code>: открыть tty (Tele Type writer)</li>
+</ul></li>
+</ul>
+</section>
+<section id="закрытие-контейнера" class="slide level2">
+<h2>Закрытие контейнера</h2>
+<ul>
+<li>Сложный путь
+<ul>
+<li><code>docker ps -a</code>: находим нужный контейнер</li>
+<li><code>docker rm hash|name</code>: убираем завершенный контейнер</li>
+</ul></li>
+<li>Простой путь
+<ul>
+<li>Добавляем флаг <code>--rm</code> при запуске контейнера</li>
+</ul></li>
+</ul>
+</section>
+<section id="подключение-к-запущенному" class="slide level2">
+<h2>Подключение к запущенному</h2>
+<ul>
+<li><code>docker exec</code>: запустить еще один контейнер</li>
+<li><code>docker attach</code>: подключение к уже запущенному
+процессу</li>
+</ul>
+</section>
+<section id="сборка-образа" class="slide level2">
+<h2>Сборка образа</h2>
+<ul>
+<li><code>Dockerfile</code>: файл с инструкциями</li>
+<li><code>FROM image</code>: выбор базового образа</li>
+<li><code>RUN command</code>: запуск команды внутри будущего образа</li>
+<li><code>COPY</code>: переместить файлы в образ</li>
+<li><code>WORKDIR</code>: сменить рабочую директорию</li>
+</ul>
+</section>
+<section id="сборка-образов" class="slide level2">
+<h2>Сборка образов</h2>
+<ul>
+<li>Образ: наслоение read-only слоев</li>
+<li><code>docker inspect image</code></li>
+<li>Всегда держим вместе
+<code>apt update -y &amp;&amp; apt install packages</code></li>
+</ul>
+</section>
+<section id="упражнение-1-1" class="slide level2">
+<h2>Упражнение 1</h2>
+<ul>
+<li>Соберите образ из <code>week11/01-simple_web/</code></li>
+<li>Укажите тег <code>example:v00</code></li>
+</ul>
+</section>
+<section id="хранение-данных" class="slide level2">
+<h2>Хранение данных</h2>
+<ul>
+<li>Выделяют три основных типа:
+<ul>
+<li><code>volumes</code>: тома докера в директории с конфигурациями</li>
+<li><code>mount</code>: монтирование в образ локального
+пространства</li>
+<li><code>tmpfs</code> (linux only): хранение в RAM</li>
+</ul></li>
+</ul>
+</section>
+<section id="упражнение-2-1" class="slide level2">
+<h2>Упражнение 2</h2>
+<ul>
+<li>Соберите образ <code>week11/02-user_volume/</code> с именем
+<code>example:v02</code></li>
+<li>Запустите контейнер с опциями
+<code>docker run -it --name tp0 example:v02</code>
+<ul>
+<li>В соседнем терминале проверьте: <code>docker volume ls</code></li>
+<li>Завершите работу образа и снова проверьте команду выше</li>
+</ul></li>
+<li>Запустите контейнер с опциями
+<code>docker run -it --rm --name tp1 example:v02</code>
+<ul>
+<li>Проведите проверки выше</li>
+</ul></li>
+</ul>
+</section>
+<section id="типы-volumes" class="slide level2">
+<h2>Типы volumes</h2>
+<ul>
+<li>Могут быть анонимными (как в предыдущем примере)</li>
+<li>Можно создавать именованные
+<ul>
+<li><code>docker volume create vol_name</code></li>
+</ul></li>
+<li>Можно передавать точку монтирования</li>
+</ul>
+</section>
+<section id="упражнение-3-1" class="slide level2">
+<h2>Упражнение 3</h2>
+<ul>
+<li>Запустите контейнер с опциями
+<code>docker run -it -v  --name tp0 example:v02</code>
+<ul>
+<li>В соседнем терминале проверьте: <code>docker volume ls</code></li>
+<li>Завершите работу образа и снова проверьте команду выше</li>
+</ul></li>
+<li>Запустите контейнер с опциями
+<code>docker run -it --rm --name tp1 example:v02</code>
+<ul>
+<li>Проведите проверки выше</li>
+</ul></li>
+</ul>
+</section>
+<section id="переменные-среды" class="slide level2">
+<h2>Переменные среды</h2>
+<ul>
+<li><code>ARG</code>: используются для передачи аргументов в контейнер
+<ul>
+<li><code>docker build --build-arg ARG0=value0 ...</code></li>
+</ul></li>
+<li><code>ENV</code>: определяет переменную среды в контейнере
+<ul>
+<li>Определить <code>LD_LIBRARY_PATH</code> или
+<code>PYTHONPAH</code></li>
+<li>Изменение <code>PATH</code> и т.д.</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="семинар-20250416" class="title-slide slide level1">
+<h1>Семинар 2025/04/16</h1>
+
+</section>
+<section id="структура-dockerfile" class="slide level2">
+<h2>Структура Dockerfile</h2>
+<pre><code>FROM image:version
+
+RUN command
+
+COPY source destination
+WORKDIR /work/dir
+
+# ENTRYPOINT [&quot;cmd&quot;]  # Optional
+
+CMD cmd args  # shell -&gt; /bin/sh -c &quot;cmd args&quot;
+CMD [&quot;cmd&quot;, &quot;args&quot;]  # exec</code></pre>
+</section>
+<section id="структура-dockerfile-1" class="slide level2">
+<h2>Структура Dockerfile</h2>
+<ul>
+<li>Опция <code>FROM</code>
+<ul>
+<li>Определяет базовый образ для построения своего образа</li>
+<li>Самый базовый образ: <code>scratch</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="структура-dockerfile-2" class="slide level2">
+<h2>Структура Dockerfile</h2>
+<ul>
+<li>Опция <code>RUN</code>
+<ul>
+<li>Запускает команду для внутри образа</li>
+<li>Часто объединяют <code>update</code>, <code>install</code> и очистку
+кэша пакетного менеджера</li>
+<li>Каждая команда в <code>Dockerfile</code> представляет отдельный
+слой: меньше слоев - меньше объем образа</li>
+</ul></li>
+</ul>
+</section>
+<section id="структура-dockerfile-3" class="slide level2">
+<h2>Структура Dockerfile</h2>
+<ul>
+<li>Опция <code>COPY</code>
+<ul>
+<li>Копирует файлы в образ</li>
+<li>Идет после установки пакетов, чтобы использовать актуальный кэш
+слоев</li>
+</ul></li>
+</ul>
+</section>
+<section id="структура-dockerfile-4" class="slide level2">
+<h2>Структура Dockerfile</h2>
+<ul>
+<li>Опция <code>ENTRYPOINT</code>
+<ul>
+<li>Определяет основную команду при запуске</li>
+<li>Переопределяется с помощью <code>-entrypoint</code></li>
+</ul></li>
+<li>Опция <code>CMD</code>
+<ul>
+<li>Определяет аргументы для <code>ENTRYPOINT</code> (если не задали
+последнее, то определяет и команду)</li>
+<li>Переопределяется аргументами <code>docker run ... args</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="структура-dockerfile-5" class="slide level2">
+<h2>Структура Dockerfile</h2>
+<ul>
+<li><code>shell</code> формат: <code>cmd args</code>
+<ul>
+<li>Запускает через <code>/bin/sh -c "cmd args</code></li>
+<li>Сигнал посылается <code>/bin/sh</code>, а не запущенной
+программе</li>
+<li>Воспринимает переменные среды</li>
+</ul></li>
+<li><code>exec</code> формат: <code>["cmd", "args"]</code>
+<ul>
+<li>Запуск без оболочки <code>/bin/sh</code></li>
+<li>Воспринимает сигналы</li>
+<li>Не может в переменные среды и подстановки</li>
+</ul></li>
+</ul>
+</section>
+<section id="сети" class="slide level2">
+<h2>Сети</h2>
+<ul>
+<li>Контейнеры могут быть объединены в общую, и даже изолированную,
+сеть</li>
+<li>Используется для изолирования контейнеров от внешнего
+пользователя</li>
+</ul>
+</section>
+<section id="ip-адрес" class="slide level2">
+<h2>IP-адрес</h2>
+<ul>
+<li>Четыре октета со значениеями: 0-255</li>
+<li>Дополнительные два числа после <code>/</code>: 0-31</li>
+</ul>
+</section>
+<section id="маска-сети" class="slide level2">
+<h2>Маска сети</h2>
+<ul>
+<li>Способ объединить несколько адресов общей сетью</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Адрес/Маска</th>
+<th>Номер сети</th>
+<th>Номер узла</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>172.15.1.12</td>
+<td>10101100.00001111</td>
+<td>00000001.00001100</td>
+</tr>
+<tr>
+<td>255.255.0.0</td>
+<td>11111111.11111111</td>
+<td>00000000.00000000</td>
+</tr>
+<tr>
+<td></td>
+<td>10101100.00001111</td>
+<td>00000000.00000000</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Альтернативная запись: 172.15.1.12/16</li>
+</ul>
+</section>
+<section id="типы-адресов" class="slide level2">
+<h2>Типы адресов</h2>
+<ul>
+<li>Локальные
+<ul>
+<li>loopback: 127.0.0.0 - 127.255.255.255</li>
+<li>Домашняя: 192.168.0.0 - 192.168.255.255</li>
+<li>Частная: 172.16.0.0 - 172.31.255.255</li>
+<li>Предприятие: 10.0.0.0 - 10.255.255.255</li>
+<li>…</li>
+</ul></li>
+</ul>
+</section>
+<section id="особые-адреса" class="slide level2">
+<h2>Особые адреса</h2>
+<ul>
+<li>Широковещательный: последний адрес по маске</li>
+<li>Адрес подсети: первый адрес по маске</li>
+</ul>
+</section>
+<section id="порт" class="slide level2">
+<h2>Порт</h2>
+<ul>
+<li>Отдельный слой абстракции сетевого протокола</li>
+<li>На одном порту может работать только одно приложение
+<ul>
+<li>22: ssh</li>
+<li>80: http</li>
+<li>443: https</li>
+<li>3306: mysql</li>
+<li>…</li>
+</ul></li>
+</ul>
+</section>
+<section id="docker-сети" class="slide level2">
+<h2>Docker-сети</h2>
+<ul>
+<li>Три основных типа
+<ul>
+<li>Host</li>
+<li>Bridge</li>
+<li>None</li>
+</ul></li>
+</ul>
+</section>
+<section id="host-сеть" class="slide level2">
+<h2>Host сеть</h2>
+<ul>
+<li>Имеет доступ в сеть на уровне хоста</li>
+<li>Каждый может достучаться до контейнера</li>
+</ul>
+</section>
+<section id="bridge-сеть" class="slide level2">
+<h2>Bridge сеть</h2>
+<ul>
+<li>Выделяет мост за которым скрываются контейнеры</li>
+<li>Хост может перейти по мосту, но не кто-то внешний</li>
+</ul>
+</section>
+<section id="none-сеть" class="slide level2">
+<h2>None сеть</h2>
+<ul>
+<li>Изолирована от хоста</li>
+<li>Никто не имеет внешнего доступа к контейнеру</li>
+</ul>
+</section>
+<section id="docker-compose" class="slide level2">
+<h2>docker-compose</h2>
+<pre><code>services:
+ minecraft:
+   image: itzg/minecraft-server
+   ports:
+     - &quot;25565:25565&quot;
+   environment:
+     EULA: &quot;TRUE&quot;
+   deploy:
+     resources:
+       limits:
+         memory: 1.5G
+   volumes:
+     - &quot;~/minecraft_data:/data&quot;</code></pre>
+</section></section>
     </div>
   </div>
 
